@@ -1,7 +1,7 @@
-import mysql.connector
 from tkinter import *
 from tkinter import messagebox
 import tkinter. font as font
+import mysql.connector
 
 root = Tk()
 root.title("Register")
@@ -45,6 +45,29 @@ class Register:
         self.mobile_label.place(x=300, y=220)
         self.mobile_entry = Entry(mastery)
         self.mobile_entry.place(x=300, y=260)
+
+        self.btn3 = Button(mastery, text="Register")
+        self.btn3.place(x=350, y=320)
+        self.btn4 = Button(mastery, text="Return to main screen", command=self.back_main)
+        self.btn4.place(x=20, y=320)
+
+    def register(self):
+        mydb = mysql.connector.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='Lifechoices_Online', auth_plugin='mysql_native_password')
+        mycursor = mydb.cursor()
+
+        xy = mycursor.execute("Select * from CLientele")
+        for i in mycursor:
+            print(i)
+            if self.username_entry.get() == i[0] and self.password_label1.get() == i[2]:
+                messagebox.showinfo("Successful! Enjoy the day")
+
+            elif self.username_entry.get() == i[0] or self.password_label1.get() == i[2]:
+                messagebox.showerror("message: Login unsuccessful")
+
+    def back_main(self):
+        root.destroy()
+        import main
+
 
 
 x = Register(root)
