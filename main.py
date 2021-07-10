@@ -37,17 +37,22 @@ class MainScreen:
         self.btn1.place(x=50, y=230)
 
     def sign_in(self):
-        mydb = mysql.connector.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='Lifechoices_Online', auth_plugin='mysql_native_password')
+        mydb = mysql.connector.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='Lifechoices_sign_in', auth_plugin='mysql_native_password')
         mycursor = mydb.cursor()
 
-        xy = mycursor.execute("Select * from CLientele")
+        xy = mycursor.execute("Select * from Clientle")
+        verified = False
         for i in mycursor:
             print(i)
-            if self.username_entry.get() == i[0] and self.password_label1.get() == i[2]:
-                messagebox.showinfo("Successful! Enjoy the day")
-
-            elif self.username_entry.get() == i[0] or self.password_label1.get() == i[2]:
-                messagebox.showerror("message: Login unsuccessful")
+            if self.username_entry.get() == i[1] and self.password_label1.get() == i[4]:
+                verified = TRUE
+                timer = "UPDATE Clientle SET Start_in_date = curdate(), Start_in_time = curtime() WHERE Client_id = " + str(i[0])
+                mycursor.execute(timer)
+                mydb.commit()
+        if verified:
+            messagebox.showinfo("Successful! Enjoy the day")
+        elif not verified:
+            messagebox.showinfo("Fail", "The information you typed in is wrong")
 
     def listing(self):
         root.destroy()

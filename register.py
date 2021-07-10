@@ -30,7 +30,11 @@ class Register:
         self.phone_number_label.place(x=20, y=230)
         self.entry_phone_number = Entry(mastery)
         self.entry_phone_number.place(x=20, y=260)
-
+        self.password_label = Label(mastery, text="Create password:", bg="#2e8bc0")
+        self.password_label.place(x=20, y=290)
+        self.entry_password = Entry(mastery)
+        self.entry_password.place(x=20, y=320)
+    # next of kin details
         self.label_next_kin = Label(mastery, text="Next of Kin Details")
         self.label_next_kin.place(x=300, y=50)
         self.name_label1 = Label(mastery, text="Name:")
@@ -46,15 +50,66 @@ class Register:
         self.mobile_entry = Entry(mastery)
         self.mobile_entry.place(x=300, y=260)
 
-        self.btn3 = Button(mastery, text="Register")
-        self.btn3.place(x=350, y=320)
+        self.btn3 = Button(mastery, text="Register", command=self.Get_Info)
+        self.btn3.place(x=350, y=310)
         self.btn4 = Button(mastery, text="Return to main screen", command=self.back_main)
-        self.btn4.place(x=20, y=320)
+        self.btn4.place(x=310, y=350)
+
+    def Get_Info(self):
+        mydb = mysql.connector.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='Lifechoices_sign_in')
+        mycursor = mydb.cursor()
+
+        val = (self.entry_ID_number.get(), self.entry_name.get(), self.entry_surname.get(), self.entry_phone_number.get(), self.entry_password.get())
+        sql = 'INSERT INTO Register_me(Id_number, Name, Surname, Phone_number, Password) \n VALUES(%s, %s, %s, %s, %s)'
+        xy = mycursor.execute(sql, val)
+
+        mydb.commit()
+
+        val1 = (self.entry_name_label1.get(), self.entry_surname_label1.get(), self.mobile_entry.get())
+        SQL1 = 'INSERT INTO My_nextkin(Name, Surname, Phone_number) \n VALUES(%s, %s, %s)'
+        xy = mycursor.execute(SQL1, val1)
+
+        mydb.commit()
+
+        # insert = "INSERT INTO Register_me(Id_number ,Name, Surname, Phone_number, Password) VALUES (%s, %s, %s, %s, %s)"
+        # val = (self.entry_ID_number.get(), self.entry_name.get(), self.entry_surname.get(), self.entry_phone_number.get(), self.entry_password.get())
+        #
+        # insert1 = "INSERT INTO My_nextkin(Name, Surname, Phone_number ) VALUES (%s, %s, %s)"
+        # val1 = (self.entry_name_label1.get(), self.entry_surname_label1, self.mobile_entry.get())
+        #
+        # try:
+        #     mycursor.execute(insert, val)
+        #     mydb.commit()
+        #     mycursor.execute(insert1, val1)
+        #     mydb.commit(buffered=True)
+        #
+        #     messagebox.showinfo("Completed")
+        # except:
+        #     mycursor.execute('Select * from Register_me')
+        #     mycursor.execute('Select * from My_nextkin')
+
+        # does not show the screen
+        # mydb = mysql.connector.connect(user='lifechoices', password='@Lifechoices1234', database='Lifechoices_sign_in')
+        # mycursor = mydb.cursor()
+        #
+        # val = (self.entry_ID_number.get(), self.entry_name.get(), self.entry_surname.get(), self.mobile_entry.get(), self.entry_password.get())
+        # sql = "INSERT INTO Register_me(Client_id ,Name, Surname, Phone_number, Password) VALUES (%s, %s, %s, %s, %s)"
+        # xy = mycursor.execute(sql, val)
+        #
+        # # next kin
+        #
+        # val = (self.entry_name_label1.get(), self.entry_surname_label1, self.mobile_entry.get())
+        # sql = "INSERT INTO My_nextkin(Name, Surname, Phone_number ) VALUES (%s, %s, %s)"
+        # xy = mycursor.execute(sql, val)
+        #
+        # xy = mycursor.execute("Select * from Clientle")
+        # for i in mycursor:
+        #     print(i)
+        #     mydb.commit()
 
     def back_main(self):
         root.destroy()
         import main
-
 
 
 x = Register(root)
