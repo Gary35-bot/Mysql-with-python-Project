@@ -1,6 +1,4 @@
 from tkinter import *
-from tkinter import messagebox
-import tkinter. font as font
 import mysql.connector
 
 root = Tk()
@@ -8,6 +6,8 @@ root.title("Register")
 root.geometry("500x400")
 root.config(bg="#2e8bc0")
 root.resizable(0, 0)
+
+# class created for the register
 
 
 class Register:
@@ -49,13 +49,13 @@ class Register:
         self.mobile_label.place(x=300, y=220)
         self.mobile_entry = Entry(mastery)
         self.mobile_entry.place(x=300, y=260)
-
-        self.btn3 = Button(mastery, text="Register", command=self.Get_Info)
+        # buttons for register form
+        self.btn3 = Button(mastery, text="Register", command=self.get_info)
         self.btn3.place(x=350, y=310)
         self.btn4 = Button(mastery, text="Return to main screen", command=self.back_main)
         self.btn4.place(x=310, y=350)
 
-    def Get_Info(self):
+    def get_info(self):
         mydb = mysql.connector.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='Lifechoices_sign_in')
         mycursor = mydb.cursor()
 

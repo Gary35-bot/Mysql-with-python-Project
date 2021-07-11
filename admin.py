@@ -2,21 +2,17 @@ import tkinter
 from tkinter import ttk
 import mysql.connector
 from tkinter import *
-from tkinter import  messagebox as mb
+from tkinter import messagebox as mb
 
-from PIL.XVThumbImagePlugin import r
 
 root = Tk()
-
 root.title("Management")
-root.geometry("600x600")
+root.geometry("800x800")
 root.config(bg="#2e8bc0")
 
 mydb = mysql.connector.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='Lifechoices_sign_in', auth_plugin='mysql_native_password')
 
 mycursor = mydb.cursor()
-
-
 
 tree = ttk.Treeview(root)
 tree['show'] = 'headings'
@@ -66,7 +62,6 @@ phone = tkinter.IntVar()
 password = tkinter.StringVar
 
 
-
 def add_data():
     add_frame = Frame(root, width=600, height=320, background="grey")
     add_frame.place(x=10, y=250)
@@ -107,6 +102,7 @@ def add_data():
     btn1 = Button(root, text="Cancel")
     btn1.place(x=350, y=400)
 
+
 def delete_col():
     selected_items = tree.selection()[0]
     print(tree.item(selected_items)['values'])
@@ -120,9 +116,48 @@ def delete_col():
 
 
 add_record = Button(root, text="Add record", command=add_data)
-add_record.place(x=250, y=350)
+add_record.place(x=250, y=500)
 
 delete_button = tkinter.Button(root, text="delete", command=delete_col)
-delete_button.place(x=350, y=350)
+delete_button.place(x=500, y=500)
+
+# nextkin table
+tree1 = ttk.Treeview(root)
+tree['show'] = 'headings'
+
+s = ttk.Style(root)
+s.theme_use("clam")
+
+tree1["columns"] = ("Client_id", "Name", "Surname", "Phone_number")
+
+
+tree1.column("Name", width=100, minwidth=100, anchor=tkinter.CENTER)
+tree1.column("Surname", width=50, minwidth=150, anchor=tkinter.CENTER)
+tree1.column("Phone_number", width=150, minwidth=150, anchor=tkinter.CENTER)
+
+
+tree1.heading("Client_id", text="Client_id", anchor=tkinter.CENTER)
+tree1.heading("Name", text="Name", anchor=tkinter.CENTER)
+tree1.heading("Surname", text="Surname", anchor=tkinter.CENTER)
+tree1.heading("Phone_number", text="Phone_number", anchor=tkinter.CENTER)
+
+
+xy = mycursor.execute("Select * from My_nextkin ORDER BY client_id")
+global count
+counter = 0
+for i in mycursor:
+    if counter % 2 == 0:
+        tree1.insert(parent="", index=counter, text='', values=(i[0], i[1], i[2], i[3]))
+    else:
+        tree1.insert(parent="", index=counter, values=(i[0], i[1], i[2], i[3]))
+    counter += 1
+
+hsb = ttk.Scrollbar(root, orient="horizontal")
+
+hsb.configure(command=tree.xview)
+tree1.configure(xscrollcommand=hsb.set)
+hsb.pack(fill=X, side=BOTTOM)
+
+tree1.pack()
 
 root.mainloop()

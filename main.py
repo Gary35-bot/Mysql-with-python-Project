@@ -1,7 +1,7 @@
 import mysql.connector
 from tkinter import *
 from tkinter import messagebox
-import tkinter. font as font
+
 
 root = Tk()
 root.title("Main Screen")
@@ -54,9 +54,18 @@ class MainScreen:
         elif not verified:
             messagebox.showinfo("Fail", "The information you typed in is wrong")
 
+        import signout
+        root.destroy()
+
     def listing(self):
         root.destroy()
         import register
+
+    def admin_login(self):
+        root.destroy()
+        import admin
+    root.bind("<Control_L><a>", admin_login)
+    root.bind("<Control_L><A>", admin_login)
 
 
 x = MainScreen(root)
